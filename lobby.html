@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>MeetLite</title> <!-- Include project name here -->
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='lobby.css'>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Choose a suitable font family */
+            background-color: #1a1a1a;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        #project {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        #project h1 {
+            font-size: 2.5rem; /* Adjust font size as needed */
+            margin: 0;
+            color: #845695; /* Choose a suitable color */
+        }
+
+        /* Add this CSS for button hover effect */
+        #join-form input[type="submit"],
+        #create-room-btn {
+            cursor: pointer; /* Change cursor to pointer on hover */
+        }
+
+        /* Notification box style */
+        #notification-box {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            display: none; /* Hidden by default */
+        }
+
+        .notification.error {
+            background-color: #ff4444;
+        }
+    </style>
+</head>
+<body>
+    <div id="project">
+        <h1>MeetLite</h1>
+    </div>
+    
+    <main id="lobby-container">
+        <div id="form-container">
+            <div id="form__container__header">
+                <p>👋 Create OR Join a Room</p>
+            </div>
+
+            <div id="form__content__wrapper">
+                <form id="join-form">
+                    <input type="text" name="invite_link" placeholder="Enter room code" required/>
+                    <input type="submit" value="Join Room" />
+                </form>
+                <button id="create-room-btn">Create Room</button>
+            </div>
+        </div>
+    </main>
+
+    <div id="notification-box"></div> <!-- Notification box container -->
+</body>
+
+<script>
+    let form = document.getElementById('join-form');
+    let notificationBox = document.getElementById('notification-box');
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const inviteCode = e.target.invite_link.value.trim();
+        if (inviteCode.includes(' ')) {
+            alert("Invite code should be one word");
+            return;
+        }
+        window.location.href = `index.html?room=${inviteCode}`;
+    });
+
+    document.getElementById('create-room-btn').addEventListener('click', () => {
+        const roomCode = generateRoomCode();
+        navigator.clipboard.writeText(roomCode).then(() => {
+            console.log('Room code copied to clipboard:', roomCode);
+            showNotification(`Room code copied to clipboard: ${roomCode}`, 'success');
+        }).catch((error) => {
+            console.error('Failed to copy room code to clipboard:', error);
+            showNotification('Failed to copy room code to clipboard. Please try again.', 'error');
+        });
+        setTimeout(() => {
+            window.location.href = `index.html?room=${roomCode}`;
+        }, 1500);  
+    });
+
+    const generateRoomCode = () => {
+        const letters = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase();
+        let code = '';
+        for (let i = 0; i < 3; i++) {
+            code += letters.charAt(Math.floor(Math.random() * letters.length));
+        }
+        code += '-';
+        for (let i = 0; i < 3; i++) {
+            code += letters.charAt(Math.floor(Math.random() * letters.length));
+        }
+        return code;
+    };
+
+    const showNotification = (message, type) => {
+        notificationBox.innerHTML = `<div class="notification ${type}">${message}</div>`;
+        notificationBox.style.display = 'block';
+        setTimeout(() => {
+            notificationBox.style.display = 'none';
+        }, 1500); // Hide after 3 seconds
+    };
+</script>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>LiteMeet</title> <!-- Include project name here -->
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='lobby.css'>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Choose a suitable font family */
+            background-color: #1a1a1a;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        #project {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        #project h1 {
+            font-size: 2.5rem; /* Adjust font size as needed */
+            margin: 0;
+            color: #845695; /* Choose a suitable color */
+        }
+
+        /* Add this CSS for button hover effect */
+        #join-form input[type="submit"],
+        #create-room-btn {
+            cursor: pointer; /* Change cursor to pointer on hover */
+        }
+    </style>
+</head>
+<body>
+    <div id="project">
+        <h1>LiteMeet</h1>
+    </div>
+    
+    <main id="lobby-container">
+        <div id="form-container">
+            <div id="form__container__header">
+                <p>👋 Create OR Join a Room</p>
+            </div>
+
+            <div id="form__content__wrapper">
+                <form id="join-form">
+                    <input type="text" name="invite_link" placeholder="Enter room code" required/>
+                    <input type="submit" value="Join Room" />
+                </form>
+                <button id="create-room-btn">Create Room</button>
+            </div>
+        </div>
+    </main>
+
+    <div id="notification-box"></div> <!-- Notification box container -->
+</body>
+
+<script>
+    let form = document.getElementById('join-form')
+    
+    form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const inviteCode = e.target.invite_link.value.trim();
+            if (inviteCode.includes(' ')) {
+                alert("Invite code should be one word");
+                return;
+            }
+            window.location.href = `index.html?room=${inviteCode}`;
+        });
+        document.getElementById('create-room-btn').addEventListener('click', () => {
+        const roomCode = generateRoomCode();
+        navigator.clipboard.writeText(roomCode).then(() => {
+            console.log('Room code copied to clipboard:', roomCode);
+            notificationBox.innerHTML = `<div class="notification success">Room code copied to clipboard: ${roomCode}</div>`;
+        }).catch((error) => {
+            console.error('Failed to copy room code to clipboard:', error);
+            notificationBox.innerHTML = `<div class="notification error">Failed to copy room code to clipboard. Please try again.</div>`;
+        });
+        setTimeout(() => {
+            window.location.href = `index.html?room=${roomCode}`;
+        }, 1500);  
+    });
+
+
+        const generateRoomCode = () => {
+        const letters = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase();
+        let code = '';
+        for (let i = 0; i < 3; i++) {
+            code += letters.charAt(Math.floor(Math.random() * letters.length));
+        }
+        code += '-';
+        for (let i = 0; i < 3; i++) {
+            code += letters.charAt(Math.floor(Math.random() * letters.length));
+        }
+        return code;
+    };
+</script>
+
+</html>
