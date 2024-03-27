@@ -24,5 +24,5 @@ This project was developed as my first venture into WebRTC technology. Through t
 - WebRTC
 - Agora RTM
 
-![Lobby](/Users/vatsal/Desktop/untitled folder/PeerChat/lobby.png)
+![Lobby](images/lobby.png)
 
