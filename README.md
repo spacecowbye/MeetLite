@@ -24,6 +24,5 @@ This project was developed as my first venture into WebRTC technology. Through t
 - WebRTC
 - Agora RTM
 
-# MeetLite
-# MeetLite
-# MeetLite
+![Lobby](/Users/vatsal/Desktop/untitled folder/PeerChat/lobby.png)
+
