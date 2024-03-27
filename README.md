@@ -24,5 +24,6 @@ This project was developed as my first venture into WebRTC technology. Through t
 - WebRTC
 - Agora RTM
 
-![Lobby](images/lobby.png)
+![Lobby](https://github.com/spacecowbye/MeetLite/raw/main/images/main_lobby.png)
+
 
